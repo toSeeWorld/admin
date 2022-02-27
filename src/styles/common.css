@@ -1,0 +1,57 @@
+@media (min-width: 1024px) {
+    #app {
+      min-height: 600px;
+    }
+  
+    #app .container .login-app {
+      width: 512px;
+    }
+  
+    #app .container .form {
+      width: 400px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .navbar-nav > li > a {
+      padding: 17px 18px;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    #app .container .login-aside {
+      display: none;
+    }
+  
+    #app .container .login-app {
+      width: 340px;
+    }
+  
+    #app .container .form {
+      width: 300px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    /* 让顶部导航栏的下拉菜单跳出原来的 flex 布局 */
+    .navbar-default .navbar-collapse {
+      width: 100%;
+      position: absolute;
+      background-color: #FFF;
+      box-shadow: 0 10px 10px 0 rgb(0, 0, 0, .1);
+    }
+  
+    .navbar-brand {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 15px;
+    }
+  
+    .nav .btn-sm {
+      margin: 0 15px 12px 15px;
+    }
+  }
+  
+  .container {
+      padding-top: 20px;
+  }

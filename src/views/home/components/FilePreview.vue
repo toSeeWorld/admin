@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100vh">
     <iframe :src="filePath"  width="100%" height="100%" frameborder="0">
     </iframe>
   </div>

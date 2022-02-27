@@ -11,6 +11,7 @@
       :model="form"
       label-position="right"
       size="small"
+      ref="form"
     >
       <el-form-item
         label="文件"
@@ -20,7 +21,6 @@
           class="upload-demo"
           action="/upload"
           :on-remove="handleRemove"
-          :on-preview="handlePreview"
           multiple
           :limit="1"
           :on-success="handleSuccess"
@@ -42,7 +42,7 @@
       </el-form-item>
       <el-form-item prop="year" label="年份">
         <el-select v-model="form.year">
-          <el-option label="2021" :value="2021" />
+          <el-option v-for="i in years" :key="i" :label="i" :value="i" />
           <el-option label="2022" :value="2022" />
         </el-select>
       </el-form-item>
@@ -85,16 +85,33 @@ export default {
     return {
       msg: "Welcome to your vueName",
       fileList: [],
+      years:[],
       form: {
         name: "",
         contributor: "",
-        year: new Date().getFullYear(),
+        year: new Date().getFullYear()-1,
         major: "",
         subject: "",
+        content: [],
       },
     };
   },
+  watch:{
+    fileList:function(val){
+       this.form.content =  val.map((it) => it.url)
+    }
+  },
+  created(){
+    this.getYear()
+  },
   methods: {
+    getYear(){
+      let val = []
+      for(let i=2021;i>=1990;i--){
+        val.push(i)
+      }
+      this.years = val
+    },
     close() {
       this.$emit("update:visible", false);
     },
@@ -103,22 +120,33 @@ export default {
       this.fileList.push({
         ...file,
         name: fileName,
+        index: this.fileList.length,
       });
       this.form.name = fileName;
     },
     handlePreview() {},
-    handleRemove(i) {
-      console.log("i", i);
+    handleRemove({ index }) {
+      this.fileList.splice(index, 1);
     },
     async handleSubmit() {
-      const { code, msg } = await addResource({
-        ...this.form,
-        content: this.fileList.map((it) => it.url),
-      });
-      if (code === 200) {
-        Message.success(msg);
-        this.$emit("refresh");
-        this.close();
+      try {
+        this.$refs.form.validate((valid) => {
+          // console.log('vali',valid);
+          if (!valid) {
+            throw new Error("表单校验失败");
+          }
+        });
+        const { code, msg } = await addResource({
+          ...this.form,
+          content: this.fileList.map((it) => it.url),
+        });
+        if (code === 200) {
+          Message.success(msg);
+          this.$emit("refresh");
+          this.close();
+        }
+      } catch (err) {
+        console.log(err);
       }
     },
   },

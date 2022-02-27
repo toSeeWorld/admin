@@ -13,6 +13,26 @@ const constantRouterMap = [
     {
         path:'/preview',
         component:()=>import("../views/home/components/FilePreview.vue")
+    },
+    {
+        path:'/todo',
+        component:()=>import("../views/todo/index.vue")
+    },
+    {
+        path:'/comment',
+        component:()=>import("../views/comment/index.vue")
+    },
+    {
+        path:'/visitor',
+        component:()=>import("../views/visitor/index.vue")
+    },
+    {
+        path:'/blog',
+        component:()=>import("../views/blog/index.vue")
+    },
+    {
+        path:"*",
+        redirect:"/home"
     }
 ]
 export default new Router({

@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class="container" shadow="never">
     <el-form
       ref="formFilter"
       size="mini"
@@ -7,6 +7,7 @@
       inline
       label-position="left"
       label-width="100px"
+      style="margin-bottom: 20px"
     >
       <el-row>
         <el-col :xl="6" :lg="6" :md="8" :sm="12" :xs="24">
@@ -32,8 +33,6 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-divider />
-
     <el-table :data="resouceList" border>
       <!-- <el-table-column label="ID" prop="id"> </el-table-column> -->
       <el-table-column label="资源名称" prop="name"> </el-table-column>
@@ -55,11 +54,11 @@
       background
       layout="prev, pager, next"
       :total="total"
-        @current-change="handleCurrentChange"
+      @current-change="handleCurrentChange"
     >
     </el-pagination>
     <FileUpload :visible.sync="showUploadDialog" @refresh="handleSearch" />
-    <FilePreivew :visible.sync="showPreviewDialog" />
+    <!-- <FilePreivew  :visible.sync="showPreviewDialog" /> -->
   </el-card>
 </template>
  
@@ -85,7 +84,7 @@ export default {
         page: 1,
         pageSize: 20,
       },
-      total:0
+      total: 0,
     };
   },
   created() {
@@ -93,29 +92,29 @@ export default {
   },
   methods: {
     async handleSearch() {
-      const { content, code,total } = await getResouceList({
+      const { content, code, total } = await getResouceList({
         ...this.queryKeys,
         ...this.pageConfig,
       });
       if (code === 200) {
         this.resouceList = content;
-        this.total = total
+        this.total = total;
       }
     },
     handleUpload() {
       this.showUploadDialog = true;
     },
-    handlePreview(row) {
-      console.log(row);
-      this.$router.push({ path: "/preview", query: row });
+    handlePreview({ content }) {
+      // console.log(row);
+      this.$router.push({ path: "/preview", query: { content } });
     },
     handleReset() {
       this.$refs.formFilter.resetFields();
+    },
+    handleCurrentChange(page) {
+      this.pageConfig.page = page;
       this.handleSearch();
     },
-    handleCurrentChange(page){
-      this.pageConfig.page = page;
-    }
   },
 };
 </script>
@@ -125,7 +124,10 @@ export default {
   float: right;
 }
 .pagination {
+  // margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 16px;
-  float: right;
+  // float: right;
 }
 </style>

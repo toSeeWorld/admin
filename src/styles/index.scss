@@ -4,6 +4,7 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './normalize.css';
+@import './common.css';
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -39,7 +40,8 @@ a:hover {
 }
 
 .clearfix {
-  &:after {
+  // color: red;
+  &::after {
     visibility: hidden;
     display: block;
     font-size: 0;
@@ -154,5 +156,9 @@ a:hover {
 
 .color-info {
   color: #909399;
+}
+
+.el-checkbox__inner {
+  border-radius: 50%;
 }
 

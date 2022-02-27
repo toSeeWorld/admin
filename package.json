@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "build": "webpack --config build/webpack.config.js --mode production",
-    "dev": "npx webpack  serve --config build/webpack.config.js --mode production"
+    "dev": "npx webpack  serve --config build/webpack.config.js  --mode development"
   },
   "dependencies": {
     "axios": "^0.25.0",

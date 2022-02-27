@@ -1,19 +1,23 @@
 <template>
   <div id="app">
-    <!-- <Home /> -->
+    <Header />
     <router-view />
+    <div class="footer-blogroll">
+      <a href="http://beian.miit.gov.cn/" target="_blank">
+        琼ICP备2022001150号</a
+      >
+    </div>
   </div>
 </template>
 
 <script>
-
-// import Home from './views/product/inde'
+import Header from "./components/Header";
 export default {
-  name: 'App',
-  // components: {
-  //   Home
-  // }
-}
+  name: "App",
+  components: {
+    Header,
+  },
+};
 </script>
 
 <style>
@@ -21,8 +25,20 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+}
+.footer-blogroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  margin-top: 16px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #495770;
+  white-space: nowrap;
 }
 </style>
