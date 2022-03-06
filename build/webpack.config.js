@@ -13,10 +13,10 @@ module.exports = {
     output: {
         filename: '[name].[hash:8].js',      // 打包后的文件名称
         path: path.resolve(__dirname, '../dist')  // 打包后的目录
-    }, 
+    },
     performance: {
-        hints:false   
-     },
+        hints: false
+    },
     devServer: {
         static: {
             directory: path.join(__dirname, 'public'),
@@ -24,11 +24,15 @@ module.exports = {
         compress: true,
         port: 9000,
         proxy: {
-            '/resource': {
-                changeOrigin: true,
-                target: 'http://localhost:6998',
-            },
-            '/upload': {
+            // '/resource': {
+            //     changeOrigin: true,
+            //     target: 'http://localhost:6998',
+            // },
+            // '/upload': {
+            //     changeOrigin: true,
+            //     target: 'http://localhost:6998',
+            // },
+            '*': {
                 changeOrigin: true,
                 target: 'http://localhost:6998',
             }
@@ -57,7 +61,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../public/index.html'),
-            favicon:path.resolve(__dirname, '../public/bitbug_favicon.ico')
+            favicon: path.resolve(__dirname, '../public/bitbug_favicon.ico')
         }),
         new CleanWebpackPlugin(),
         // new ProgressBarPlugin({

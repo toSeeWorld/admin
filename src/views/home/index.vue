@@ -21,7 +21,7 @@
           </el-button>
           <el-button size="mini" @click="handleReset"> 重置 </el-button>
         </el-col>
-        <el-col :xl="6" :lg="6" :md="8" :sm="6" :xs="12">
+        <el-col v-if="name === '9812'" :xl="6" :lg="6" :md="8" :sm="6" :xs="12">
           <el-button
             type="primary"
             class="upload-button"
@@ -54,6 +54,8 @@
       background
       layout="prev, pager, next"
       :total="total"
+      :current-page="pageConfig.page"
+      :page-size="pageConfig.pageSize"
       @current-change="handleCurrentChange"
     >
     </el-pagination>
@@ -66,11 +68,17 @@
 import FileUpload from "./components/FileUpload";
 import FilePreivew from "./components/FilePreview";
 import { getResouceList } from "@/api/index";
+import { mapState } from "vuex";
 export default {
   name: "vueName",
   components: {
     FileUpload,
     FilePreivew,
+  },
+  computed: {
+    ...mapState({
+      name: (state) => state.user.name,
+    }),
   },
   data() {
     return {

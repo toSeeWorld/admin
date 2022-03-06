@@ -1,9 +1,41 @@
 <template>
-  <div class="container todo-module">
-    <div class="layout-main">
+  <div class="container todo-module" ref="todo">
+    <div class="layout-main" :style="styleTheme">
       <div class="todo-header">
-        <div class="todo-day">我的一天</div>
-        <div class="todo-current">{{ currentDay }}</div>
+        <div>
+          <div class="todo-day">我的一天</div>
+          <div class="todo-current">{{ currentDay }}</div>
+        </div>
+        <div style="position: relative">
+          <div class="dot-container" @click.stop="showSelctor = true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div
+            :class="['backgound-selector', showSelctor ? 'showSelctor' : '']"
+          >
+            <div>
+              <div class="background-theme">主题</div>
+              <div class="background-list">
+                <ul>
+                  <li
+                    v-for="(bg, index) in colorList"
+                    :key="bg.url"
+                    @click.stop="handleChoose(bg)"
+                    :style="{ marginRight: index % 2 === 0 ? '10px' : '0px' }"
+                  >
+                    <img
+                      style="width: 100%; height: 100%"
+                      :src="bg.url"
+                      alt=""
+                    />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="todo-list">
         <div class="task-list">
@@ -11,10 +43,9 @@
             <li v-for="(task, index) in taskList" :key="task">
               <el-checkbox @change="handleAppend(index)" />
               <div class="text-box">{{ task }}</div>
-              <div class="dot-container">
-                <i class="el-icon-delete" @click="taskList.splice(index,1)" />
+              <div class="delete-container">
+                <i class="el-icon-delete" @click="taskList.splice(index, 1)" />
               </div>
-              <div></div>
             </li>
           </ul>
         </div>
@@ -24,8 +55,11 @@
             <li v-for="(task, index) in finishTask" :key="task">
               <el-checkbox :value="true" @change="handleRemove(index)" />
               <div class="text-box finish-text">{{ task }}</div>
-               <div class="dot-container">
-                <i class="el-icon-delete" @click="finishTask.splice(index,1)" />
+              <div class="delete-container">
+                <i
+                  class="el-icon-delete"
+                  @click="finishTask.splice(index, 1)"
+                />
               </div>
             </li>
           </ul>
@@ -44,6 +78,7 @@
 </template>
  
 <script>
+import { colorList } from "./modules";
 export default {
   name: "vueName",
   data() {
@@ -52,9 +87,19 @@ export default {
       task: "",
       taskList: [],
       finishTask: [],
+      colorList,
+      currentBackground: "http://file.ririxue.cn/xiyang.jpeg",
+      showSelctor: false,
     };
   },
   computed: {
+    styleTheme() {
+      return {
+        backgroundImage: `url(${this.currentBackground})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%",
+      };
+    },
     currentDay() {
       const weeks = new Array(
         "星期日",
@@ -81,9 +126,21 @@ export default {
     this.taskList = unfinishTask ? JSON.parse(unfinishTask) : [];
     this.finishTask = finishTask ? JSON.parse(finishTask) : [];
   },
-  destroyed() {
-    localStorage.setItem("unfinishTask", JSON.stringify(this.taskList));
-    localStorage.setItem("finishTask", JSON.stringify(this.finishTask));
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.todo.addEventListener("click", () => {
+          console.log('ref');
+        this.showSelctor = false;
+      });
+    });
+  },
+  watch: {
+    taskList: function (val) {
+      localStorage.setItem("unfinishTask", JSON.stringify(val));
+    },
+    finishTask: function (val) {
+      localStorage.setItem("finishTask", JSON.stringify(val));
+    },
   },
   methods: {
     handleAppendTask() {
@@ -92,6 +149,10 @@ export default {
       }
       this.taskList.push(this.task);
       this.task = "";
+    },
+    handleChoose(bg) {
+        console.log('btn');
+      this.currentBackground = bg.url;
     },
     handleAppend(index) {
       const val = this.taskList[index];
@@ -116,18 +177,19 @@ export default {
   .layout-main {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     margin: 0 auto;
     min-height: 560px;
     width: 70%;
-    background: url("http://ririxue.cn/xiyang.jpeg");
     border-radius: 8px;
     box-shadow: 0px 20px 40px 0px rgb(0 0 0 / 8%);
     padding: 0px 20px 40px;
 
     .todo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       position: relative;
-      overflow: hidden;
+      //   overflow: hidden;
       margin-top: 20px;
       margin-bottom: 20px;
       .todo-day {
@@ -141,6 +203,56 @@ export default {
         font-size: 14px;
         font-weight: 500;
         text-align: left;
+      }
+      .dot-container {
+        width: 23px;
+        height: 23px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        border-radius: 4px;
+        &:hover {
+          background: rgba(255, 255, 255, 0.75);
+        }
+        & > span {
+          display: inline-block;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.75);
+          // margin-bottom: 2px;
+        }
+      }
+      .showSelctor {
+        display: block !important;
+      }
+      .backgound-selector {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: -10px;
+        padding: 10px 12px;
+        min-height: 200px;
+        width: 200px;
+        background: white;
+        border-radius: 6px;
+        z-index: 1;
+        font-size: 16px;
+        font-weight: 400;
+        .background-theme {
+          height: 28px;
+          line-height: 28px;
+        }
+        .background-list {
+          ul > li {
+            float: left;
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+          }
+        }
       }
     }
     .todo-list {
@@ -175,7 +287,7 @@ export default {
             }
             &:hover {
               background: rgba(255, 255, 255, 0.85);
-              & > .dot-container {
+              & > .delete-container {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
@@ -187,7 +299,7 @@ export default {
               }
             }
 
-            .dot-container {
+            .delete-container {
               // float: right;
               margin-left: 0;
               display: none;

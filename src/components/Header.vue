@@ -11,6 +11,12 @@
           <li><router-link to="/blog">博客</router-link></li>
           <li><router-link to="/visitor">访客记录</router-link></li>
           <li><router-link to="/comment">评论区</router-link></li>
+          <li>
+            <Navbar v-if="name" :name="name" />
+            <router-link v-else to="/login" class="login"
+              >登录/注册</router-link
+            >
+          </li>
         </ul>
       </nav>
     </div>
@@ -18,8 +24,16 @@
 </template>
  
 <script>
+import { mapState } from "vuex";
+import Navbar from "./Navbar.vue";
 export default {
   name: "vueName",
+  components: {
+    Navbar,
+  },
+  computed: {
+    ...mapState({ name: (state) => state.user.name }),
+  },
   data() {
     return {
       msg: "Welcome to your vueName",
@@ -76,6 +90,16 @@ export default {
         color: #7a8599;
         font-size: 14px;
         line-height: 22px;
+      }
+      .login {
+        margin-left: 16px;
+        padding: 19px 16px;
+        color: #fff;
+        border: none;
+        border-radius: 0;
+        font-size: 14px;
+        line-height: 22px;
+        background-color: #07beff;
       }
     }
   }
