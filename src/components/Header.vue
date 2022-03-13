@@ -27,17 +27,14 @@
 import { mapState } from "vuex";
 import Navbar from "./Navbar.vue";
 export default {
-  name: "vueName",
+  name: "navbar",
   components: {
     Navbar,
   },
   computed: {
-    ...mapState({ name: (state) => state.user.name }),
-  },
-  data() {
-    return {
-      msg: "Welcome to your vueName",
-    };
+    ...mapState({
+      name: (state) => state.user.name,
+    }),
   },
 };
 </script>

@@ -12,10 +12,21 @@
 
 <script>
 import Header from "./components/Header";
+import { mapMutations } from "vuex";
 export default {
   name: "App",
   components: {
     Header,
+  },
+  created() {
+    const loginForm = JSON.parse(sessionStorage.getItem("ririxue-isLogin"));
+    if (loginForm) {
+      this.setUserName(loginForm.name);
+      this.setUserAdmin(loginForm.isAdmin);
+    }
+  },
+  methods: {
+    ...mapMutations("user", ["setUserName", "setUserAdmin"]),
   },
 };
 </script>

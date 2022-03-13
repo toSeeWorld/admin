@@ -70,8 +70,7 @@ export default {
     };
   },
   methods: {
-    //   ...mapActions(['userLogin']),
-    ...mapMutations('user',['setUserName']),
+    ...mapMutations('user',['setUserName','setUserAdmin']),
     // 向登录接口发起请求
     login() {
       let user = this.formLogin;
@@ -83,9 +82,11 @@ export default {
       this.$refs["formLogin"].validate((valid) => {
         if (valid) {
           // 通过验证之后才请求登录接口
-          signin(formData).then((res) => {
-            console.log("res", res);
-            this.setUserName(this.formLogin.name)
+          signin(formData).then(({result}) => {
+            console.log('isAdmin',result.isAdmin);
+            this.setUserName(result.name)
+            this.setUserAdmin(result.isAdmin)
+            sessionStorage.setItem("ririxue-isLogin",JSON.stringify(result))
             this.$router.push("/");
           });
         } else {

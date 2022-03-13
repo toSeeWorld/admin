@@ -20,3 +20,10 @@ export function upload(data){
         data
     })
 }
+export function updateDownload(data){
+    return request({
+        url:'/resource/updateDownload',
+        method:'post',
+        data
+    })
+}

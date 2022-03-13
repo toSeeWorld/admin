@@ -19,7 +19,7 @@
         :rules="[{ required: true, message: '请上传文件' }]"
         ><el-upload
           class="upload-demo"
-          action="/upload"
+          action="http://ririxue.cn:6998/upload"
           :on-remove="handleRemove"
           multiple
           :limit="1"
@@ -140,7 +140,7 @@ export default {
           ...this.form,
           content: this.fileList.map((it) => it.url),
         });
-        if (code === 200) {
+        if (code === 0) {
           Message.success(msg);
           this.$emit("refresh");
           this.close();

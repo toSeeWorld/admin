@@ -21,7 +21,7 @@
           </el-button>
           <el-button size="mini" @click="handleReset"> 重置 </el-button>
         </el-col>
-        <el-col v-if="name === '9812'" :xl="6" :lg="6" :md="8" :sm="6" :xs="12">
+        <el-col v-if="isAdmin" :xl="6" :lg="6" :md="8" :sm="6" :xs="12">
           <el-button
             type="primary"
             class="upload-button"
@@ -41,10 +41,11 @@
       <el-table-column label="年份" prop="year"> </el-table-column>
       <el-table-column label="上传时间" prop="create_time"> </el-table-column>
       <el-table-column label="贡献者" prop="contributor"> </el-table-column>
+      <el-table-column label="下载量" prop="downloadTime"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="handlePreview(scope.row)" size="mini">
-            预览
+            下载
           </el-button>
         </template>
       </el-table-column>
@@ -60,24 +61,23 @@
     >
     </el-pagination>
     <FileUpload :visible.sync="showUploadDialog" @refresh="handleSearch" />
-    <!-- <FilePreivew  :visible.sync="showPreviewDialog" /> -->
   </el-card>
 </template>
  
 <script>
 import FileUpload from "./components/FileUpload";
 import FilePreivew from "./components/FilePreview";
-import { getResouceList } from "@/api/index";
+import { getResouceList, updateDownload } from "@/api/index";
 import { mapState } from "vuex";
 export default {
-  name: "vueName",
+  name: "resourcelist",
   components: {
     FileUpload,
     FilePreivew,
   },
   computed: {
     ...mapState({
-      name: (state) => state.user.name,
+      isAdmin:(state) => state.user.isAdmin
     }),
   },
   data() {
@@ -100,20 +100,20 @@ export default {
   },
   methods: {
     async handleSearch() {
-      const { content, code, total } = await getResouceList({
+      const { result, code, total } = await getResouceList({
         ...this.queryKeys,
         ...this.pageConfig,
       });
-      if (code === 200) {
-        this.resouceList = content;
+      if (code === 0) {
+        this.resouceList = result;
         this.total = total;
       }
     },
     handleUpload() {
       this.showUploadDialog = true;
     },
-    handlePreview({ content }) {
-      // console.log(row);
+    handlePreview({ content, id }) {
+      updateDownload({ id });
       this.$router.push({ path: "/preview", query: { content } });
     },
     handleReset() {
