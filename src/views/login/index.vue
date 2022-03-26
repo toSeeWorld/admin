@@ -40,7 +40,8 @@
 
 <script type="text/javascript">
 import { signin } from "../../api/index";
-import {mapMutations} from 'vuex'
+import { mapMutations } from "vuex";
+import { setToken } from "../../utils/auth";
 export default {
   data() {
     let checkUserName = (rule, value, cb) => {
@@ -70,7 +71,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('user',['setUserName','setUserAdmin']),
+    ...mapMutations("user", ["setUserName", "setUserAdmin"]),
     // 向登录接口发起请求
     login() {
       let user = this.formLogin;
@@ -82,11 +83,10 @@ export default {
       this.$refs["formLogin"].validate((valid) => {
         if (valid) {
           // 通过验证之后才请求登录接口
-          signin(formData).then(({result}) => {
-            console.log('isAdmin',result.isAdmin);
-            this.setUserName(result.name)
-            this.setUserAdmin(result.isAdmin)
-            sessionStorage.setItem("ririxue-isLogin",JSON.stringify(result))
+          signin(formData).then(({ result }) => {
+            this.setUserName(result.name);
+            this.setUserAdmin(result.isAdmin);
+            setToken(result.token);
             this.$router.push("/");
           });
         } else {

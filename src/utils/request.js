@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Message } from 'element-ui'
+import { getToken } from './auth';
 const service = axios.create({
     baseURL: process.env.NODE_ENV === 'development' ? '/' : 'http://101.43.124.26:6998',
-    timeout: 1500
+    timeout: 5000
 })
 service.interceptors.request.use(config => {
     return config

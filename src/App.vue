@@ -13,16 +13,18 @@
 <script>
 import Header from "./components/Header";
 import { mapMutations } from "vuex";
+import { getToken } from "./utils/auth";
+import { getLoginInfo } from "./api";
 export default {
   name: "App",
   components: {
     Header,
   },
-  created() {
-    const loginForm = JSON.parse(sessionStorage.getItem("ririxue-isLogin"));
-    if (loginForm) {
-      this.setUserName(loginForm.name);
-      this.setUserAdmin(loginForm.isAdmin);
+  async created() {
+    if (getToken) {
+      const { result } = await getLoginInfo();
+      this.setUserName(result.name);
+      this.setUserAdmin(result.isAdmin);
     }
   },
   methods: {
