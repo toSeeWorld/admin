@@ -84,6 +84,7 @@ export default {
       this.$refs["formRegister"].validate((valid) => {
         if (valid) {
           signup(formData).then(() => {
+            this.$message.success("注册成功");
             this.$router.push("/login");
           });
         } else {

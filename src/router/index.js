@@ -22,7 +22,7 @@ const constantRouterMap = [
         path: '/comment',
         component: () => import("../views/comment/index.vue"),
         meta: {
-            roles: ['common_user']
+            roles: ['common_user', 'admin']
         }
     },
     {
@@ -36,8 +36,22 @@ const constantRouterMap = [
         path: '/blog',
         component: () => import("../views/blog/index.vue"),
         meta: {
+            roles: []
+        },
+    },
+    {
+        path: '/edit-blog',
+        component: () => import("../views//blog/edit/index.vue"),
+        meta: {
             roles: ['admin']
-        }
+        },
+    },
+    {
+        path: '/detail-blog/:id',
+        component: () => import("../views//blog/detail.vue"),
+        meta: {
+            roles: []
+        },
     },
     {
         path: '/login',
@@ -48,8 +62,8 @@ const constantRouterMap = [
         component: () => import("../views/register/index.vue")
     },
     {
-        path:'/404',
-        component:()=>import("../components/404.vue")
+        path: '/404',
+        component: () => import("../components/404.vue")
     },
     {
         path: "*",

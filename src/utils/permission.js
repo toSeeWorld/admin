@@ -42,8 +42,9 @@ router.beforeEach(async (to, from, next) => {
     }
 })
 function hashPermission(roles, curRoles) {
+    if (roles.length === 0) return true
     const names = curRoles.map((it) => it.name)
-    return roles.some((it) => it.includes(names))
+    return roles.some((it) => names.includes(it))
 }
 router.afterEach(() => {
     NProgress.done()

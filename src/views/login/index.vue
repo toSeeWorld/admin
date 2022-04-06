@@ -40,7 +40,7 @@
 
 <script type="text/javascript">
 import { signin } from "../../api/index";
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import { setToken } from "../../utils/auth";
 export default {
   data() {
@@ -71,6 +71,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("user",["getRoleList"]),
     ...mapMutations("user", ["setUserName", "setUserAdmin"]),
     // 向登录接口发起请求
     login() {
@@ -87,6 +88,7 @@ export default {
             this.setUserName(result.name);
             this.setUserAdmin(result.isAdmin);
             setToken(result.token);
+            this.getRoleList()
             this.$router.push("/");
           });
         } else {
